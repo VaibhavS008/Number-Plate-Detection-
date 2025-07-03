@@ -1,0 +1,80 @@
+{% extends 'Base.html' %}
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags %}<script>alert("{{ message }}")</script>{% endif %}
+    {% endfor %}
+{% endif %}
+
+<style>
+    .box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-top: 50px;
+    }
+    .box > div {
+        width: 500px;
+        height: auto;
+    }
+    .yolo-switcher {
+        margin: 15px 0;
+        padding: 10px;
+        background: rgba(255,255,255,0.8);
+        border-radius: 5px;
+    }
+    .yolo-version {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+    .yolo-option {
+        display: flex;
+        align-items: center;
+    }
+    .btn-primary {
+        margin-top: 10px;
+    }
+</style>
+
+<div style="background-image: url('/media/imb1.jpg'); background-repeat:no-repeat; background-size:cover; height:658px; width:100%;">
+    <div class="box">
+        <div class="shadow p-3 mb-5 bg-body rounded">
+            <form action="/Detect_Video/" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h1>Select Video</h1>
+                
+                <!-- YOLO Version Switcher -->
+                <div class="yolo-switcher">
+                    <label>Detection Model:</label>
+                    <div class="yolo-version">
+                        <div class="yolo-option">
+                            <input type="radio" id="yolov5" name="yolo_version" value="v5" 
+                                   {% if selected_version == "v5" or not selected_version %}checked{% endif %}>
+                            <label for="yolov5" style="margin-left: 5px;">YOLOv5</label>
+                        </div>
+                        <div class="yolo-option">
+                            <input type="radio" id="yolov8" name="yolo_version" value="v8"
+                                   {% if selected_version == "v8" %}checked{% endif %}>
+                            <label for="yolov8" style="margin-left: 5px;">YOLOv8</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <input class="form-control" type="file" name="video" accept="video/*">
+                <br>
+                <input class="btn btn-primary" type="submit" value="Process Video">
+            </form>
+        </div>
+    </div>
+</div>
+
+{% if detected_text %}
+<div class="container mt-4 text-center">
+    <h3>Detected License Plates:</h3>
+    <div style="background: white; padding: 20px; border-radius: 5px; max-width: 800px; margin: 0 auto;">
+        <pre style="font-size: 16px; white-space: pre-wrap;">{{ detected_text }}</pre>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

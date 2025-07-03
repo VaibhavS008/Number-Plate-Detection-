@@ -1,0 +1,14 @@
+<!-- results.html -->
+{% extends 'Base.html' %}
+{% block content %}
+<div class="container mt-4 text-center">
+    <h3>Detected License Plate Number:</h3>
+    <p style="font-size: 24px; font-weight: bold;">{{ detected_text }}</p>
+
+    <h4>Result Image</h4>
+    <img src="{{ MEDIA_URL }}{{ result_img }}" class="img-fluid mb-3" style="max-width: 100%; height: auto;">
+
+    <h4>Cropped License Plate</h4>
+    <img src="{{ MEDIA_URL }}{{ cropped_img }}" class="img-fluid" style="max-width: 100%; height: auto;">
+</div>
+{% endblock %}
